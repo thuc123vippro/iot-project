@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0
+    image: sinhviennamhai/iot-db:latest
     container_name: smart-home-mysql
     restart: unless-stopped
     environment:
@@ -10,7 +10,6 @@ services:
       - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./server/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
       interval: 5s
@@ -18,7 +17,7 @@ services:
       retries: 10
 
   mqtt-broker:
-    image: eclipse-mosquitto:latest
+    image: eclipse-mosquitto:2
     container_name: smart-home-mqtt
     restart: unless-stopped
     ports:
@@ -27,7 +26,6 @@ services:
 
   backend:
     image: sinhviennamhai/iot-backend:latest
-    build: ./server
     container_name: smart-home-node
     restart: unless-stopped
     ports:
@@ -48,7 +46,6 @@ services:
 
   frontend:
     image: sinhviennamhai/iot-frontend:latest
-    build: ./web-control
     container_name: smart-home-react
     restart: unless-stopped
     ports:
