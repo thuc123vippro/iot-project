@@ -1,0 +1,130 @@
+.profile-page {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--profile-page-bg);
+  border-radius: 18px;
+}
+
+.profile-shell {
+  width: min(100%, 720px);
+}
+
+.profile-header-card {
+  position: relative;
+  margin-top: 40px;
+  background: var(--profile-card-bg);
+  border: 2px solid var(--profile-card-border);
+  border-radius: 12px;
+  padding: 58px 24px 20px;
+  text-align: center;
+  box-shadow: 0 18px 36px var(--profile-card-shadow);
+}
+
+.profile-avatar {
+  width: 118px;
+  height: 118px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid var(--profile-avatar-border);
+  background: var(--profile-avatar-bg);
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.profile-info p {
+  margin: 12px 0 0;
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--profile-subtext);
+}
+
+.profile-link-list {
+  margin-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.profile-link-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--profile-card-bg);
+  border: 2px solid var(--profile-card-border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: var(--profile-link-text);
+  text-decoration: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-link-item:hover {
+  transform: translateY(-1px);
+  border-color: var(--profile-link-hover-border);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.profile-link-icon {
+  width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-link-icon.icon-report {
+  color: #ff5a5a;
+}
+
+.profile-link-icon.icon-docs {
+  color: #ff8f3d;
+}
+
+.profile-link-icon.icon-github {
+  color: #d7dbe6;
+}
+
+.profile-link-icon.icon-figma {
+  color: #9ba7ff;
+}
+
+.profile-link-title {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+body.theme-light .profile-info h2 {
+  color: #1f3569;
+}
+
+body.theme-light .profile-link-icon.icon-github {
+  color: #1f2b43;
+}
+
+@media (max-width: 980px) {
+  .profile-shell {
+    width: 100%;
+  }
+
+  .profile-info h2 {
+    font-size: 28px;
+  }
+
+  .profile-info p {
+    font-size: 30px;
+  }
+
+  .profile-link-title {
+    font-size: 28px;
+  }
+}

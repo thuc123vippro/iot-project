@@ -1,0 +1,101 @@
+#include <WiFi.h>
+#include <PubSubClient.h>
+#include <WiFiManager.h>
+#include <DHT.h>
+#include <ArduinoJson.h>
+
+const char* mqtt_server = "192.168.1.120";
+const int   mqtt_port   = 1884;
+const char* mqtt_user   = "admin";
+const char* mqtt_pass   = "123456";
+
+#define DHTPIN  27
+#define DHTTYPE DHT22
+#define LDR_PIN 34
+
+const float GAMMA = 0.7;
+const float RL10  = 50;
+
+DHT dht(DHTPIN, DHTTYPE);
+WiFiClient espClient;
+PubSubClient client(espClient);
+long lastMsg = 0;
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  if (String(topic) != "iot/devicecontroll") return;
+
+  StaticJsonDocument<128> doc;
+  if (deserializeJson(doc, payload, length)) return;
+
+  int    device_id = doc["device_id"];
+  int    pin       = doc["pin"];
+  String command   = doc["command"].as<String>();
+
+  pinMode(pin, OUTPUT);
+  digitalWrite(pin, command == "on" ? HIGH : LOW);
+
+  // Phản hồi về topic chung
+  StaticJsonDocument<64> resp;
+  resp["device_id"] = device_id;
+  resp["result"]    = command + " success";
+
+  char buf[64];
+  serializeJson(resp, buf);
+  client.publish("iot/deviceresponse", buf);
+
+  Serial.printf("[CTRL] Device %d | pin %d | %s\n", device_id, pin, command.c_str());
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Dang ket noi MQTT...");
+    String clientId = "ESP32_" + String(random(0xffff), HEX);
+
+    if (client.connect(clientId.c_str(), mqtt_user, mqtt_pass)) {
+      Serial.println("Thanh cong!");
+      client.subscribe("iot/devicecontroll");
+    } else {
+      Serial.printf("Loi rc=%d, thu lai sau 5s\n", client.state());
+      delay(5000);
+    }
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  pinMode(LDR_PIN, INPUT);
+
+  WiFiManager wm;
+  if (!wm.autoConnect("ESP32_Cau_Hinh")) ESP.restart();
+  Serial.println("WiFi OK!");
+
+  client.setServer(mqtt_server, mqtt_port);
+  client.setCallback(callback);
+}
+
+void loop() {
+  if (!client.connected()) reconnect();
+  client.loop();
+
+  long now = millis();
+  if (now - lastMsg > 2000) {
+    lastMsg = now;
+
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
+    int   rawLight = analogRead(LDR_PIN);
+
+    float voltage    = rawLight * (3.3 / 4095.0);
+    float resistance = (10000.0 * voltage) / (3.3 - voltage);
+    float lux        = pow(RL10 * 1e3 * pow(10, GAMMA) / resistance, (1 / GAMMA));
+
+    if (isnan(h) || isnan(t)) { t = 0; h = 0; }
+
+    String json = "{\"Temperature\":" + String(t, 0)
+                + ",\"Humidity\":"    + String(h, 0)
+                + ",\"Light\":"       + String(lux, 0) + "}";
+    client.publish("iot/sensor/all", json.c_str());
+    Serial.println("Sent: " + json);
+  }
+}

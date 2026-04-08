@@ -1,0 +1,306 @@
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const port = process.env.PORT || 3001;
+
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'IOT Control API',
+            version: '1.0.0',
+            description: 'API documentation for device and sensor management services.'
+        },
+        servers: [
+            {
+                url: `http://localhost:${port}`,
+                description: 'Local server'
+            }
+        ],
+        tags: [
+            { name: 'Devices', description: 'Device operations' },
+            { name: 'Sensors', description: 'Sensor operations' },
+            { name: 'History', description: 'Action and sensor history operations' }
+        ],
+        paths: {
+            '/api/devices': {
+                get: {
+                    tags: ['Devices'],
+                    summary: 'Get all devices',
+                    responses: {
+                        200: {
+                            description: 'List of devices',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'array',
+                                        items: { $ref: '#/components/schemas/Device' }
+                                    }
+                                }
+                            }
+                        },
+                        500: {
+                            description: 'Server error',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ErrorResponse' }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/toggle-device': {
+                post: {
+                    tags: ['Devices'],
+                    summary: 'Toggle a device state (on/off)',
+                    requestBody: {
+                        required: true,
+                        content: {
+                            'application/json': {
+                                schema: { $ref: '#/components/schemas/ToggleDeviceRequest' }
+                            }
+                        }
+                    },
+                    responses: {
+                        200: {
+                            description: 'Toggle command accepted',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ToggleDeviceResponse' }
+                                }
+                            }
+                        },
+                        400: {
+                            description: 'Validation or business rule error',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            message: { type: 'string', example: 'Thiet bi khong ton tai' }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/action-history': {
+                get: {
+                    tags: ['History'],
+                    summary: 'Get paginated device action history',
+                    parameters: [
+                        { name: 'page', in: 'query', schema: { type: 'integer', minimum: 1, default: 1 } },
+                        { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 100, default: 20 } },
+                        { name: 'findBy', in: 'query', schema: { type: 'string', enum: ['all', 'name', 'action', 'status', 'timestamp'], default: 'all' } },
+                        { name: 'search', in: 'query', schema: { type: 'string', default: '' } },
+                        { name: 'sortBy', in: 'query', schema: { type: 'string', enum: ['newest', 'oldest', 'nameAsc', 'nameDesc', 'actionAsc', 'actionDesc', 'statusAsc', 'statusDesc'], default: 'newest' } }
+                    ],
+                    responses: {
+                        400: {
+                            description: 'Invalid query parameters',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ValidationErrorResponse' }
+                                }
+                            }
+                        },
+                        200: {
+                            description: 'Paginated action history',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/PaginatedActionHistoryResponse' }
+                                }
+                            }
+                        },
+                        500: {
+                            description: 'Server error',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ErrorResponse' }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/sensors': {
+                get: {
+                    tags: ['Sensors'],
+                    summary: 'Get all sensors with latest values',
+                    responses: {
+                        200: {
+                            description: 'List of sensors',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'array',
+                                        items: { $ref: '#/components/schemas/Sensor' }
+                                    }
+                                }
+                            }
+                        },
+                        500: {
+                            description: 'Server error',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ErrorResponse' }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/api/sensor-data': {
+                get: {
+                    tags: ['History'],
+                    summary: 'Get paginated sensor data history',
+                    parameters: [
+                        { name: 'page', in: 'query', schema: { type: 'integer', minimum: 1, default: 1 } },
+                        { name: 'limit', in: 'query', schema: { type: 'integer', minimum: 1, maximum: 100, default: 20 } },
+                        { name: 'findBy', in: 'query', schema: { type: 'string', enum: ['all', 'name', 'value', 'timestamp'], default: 'all' } },
+                        { name: 'search', in: 'query', schema: { type: 'string', default: '' } },
+                        { name: 'sortBy', in: 'query', schema: { type: 'string', enum: ['newest', 'oldest', 'valueAsc', 'valueDesc', 'nameAsc', 'nameDesc'], default: 'newest' } },
+                        { name: 'unit', in: 'query', schema: { type: 'string', example: 'C' }, description: 'Optional unit filter (e.g. C, %, ppm)' }
+                    ],
+                    responses: {
+                        400: {
+                            description: 'Invalid query parameters',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ValidationErrorResponse' }
+                                }
+                            }
+                        },
+                        200: {
+                            description: 'Paginated sensor history',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/PaginatedSensorDataResponse' }
+                                }
+                            }
+                        },
+                        500: {
+                            description: 'Server error',
+                            content: {
+                                'application/json': {
+                                    schema: { $ref: '#/components/schemas/ErrorResponse' }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        components: {
+            schemas: {
+                Device: {
+                    type: 'object',
+                    properties: {
+                        device_id: { type: 'integer', example: 1 },
+                        name: { type: 'string', example: 'Fan' },
+                        type: { type: 'string', example: 'switch' },
+                        current_status: { type: 'string', example: 'on' }
+                    }
+                },
+                Sensor: {
+                    type: 'object',
+                    properties: {
+                        sensor_id: { type: 'integer', example: 1 },
+                        name: { type: 'string', example: 'Temperature' },
+                        type: { type: 'string', example: 'DHT22' },
+                        unit: { type: 'string', example: 'C' },
+                        lastest_value: { type: 'number', nullable: true, example: 28.5 }
+                    }
+                },
+                ActionHistoryItem: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'integer', example: 12 },
+                        device_id: { type: 'integer', example: 1 },
+                        device_name: { type: 'string', example: 'Fan' },
+                        action: { type: 'string', example: 'on' },
+                        status: { type: 'string', example: 'on' },
+                        created_at: { type: 'string', format: 'date-time' }
+                    }
+                },
+                SensorDataItem: {
+                    type: 'object',
+                    properties: {
+                        sensor_id: { type: 'integer', example: 1 },
+                        sensor_name: { type: 'string', example: 'Temperature' },
+                        value: { type: 'number', example: 28.5 },
+                        unit: { type: 'string', example: 'C' },
+                        created_at: { type: 'string', format: 'date-time' }
+                    }
+                },
+                Pagination: {
+                    type: 'object',
+                    properties: {
+                        page: { type: 'integer', example: 1 },
+                        limit: { type: 'integer', example: 20 },
+                        total: { type: 'integer', example: 53 },
+                        totalPages: { type: 'integer', example: 3 }
+                    }
+                },
+                PaginatedActionHistoryResponse: {
+                    type: 'object',
+                    properties: {
+                        data: {
+                            type: 'array',
+                            items: { $ref: '#/components/schemas/ActionHistoryItem' }
+                        },
+                        pagination: { $ref: '#/components/schemas/Pagination' }
+                    }
+                },
+                PaginatedSensorDataResponse: {
+                    type: 'object',
+                    properties: {
+                        data: {
+                            type: 'array',
+                            items: { $ref: '#/components/schemas/SensorDataItem' }
+                        },
+                        pagination: { $ref: '#/components/schemas/Pagination' }
+                    }
+                },
+                ToggleDeviceRequest: {
+                    type: 'object',
+                    required: ['device_id'],
+                    properties: {
+                        device_id: { type: 'integer', example: 1 }
+                    }
+                },
+                ToggleDeviceResponse: {
+                    type: 'object',
+                    properties: {
+                        success: { type: 'boolean', example: true },
+                        message: { type: 'string', example: 'Da gui lenh, dang cho phan hoi...' }
+                    }
+                },
+                ErrorResponse: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string', example: 'Internal server error' }
+                    }
+                },
+                ValidationErrorResponse: {
+                    type: 'object',
+                    properties: {
+                        error: { type: 'string', example: 'Tham số không hợp lệ' },
+                        details: {
+                            type: 'object',
+                            additionalProperties: { type: 'string' },
+                            example: {
+                                findBy: 'findBy không hợp lệ. Cho phép: all, name, value, timestamp'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    apis: []
+};
+
+module.exports = swaggerJSDoc(options);

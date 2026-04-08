@@ -1,0 +1,336 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+.sensor-page {
+  height: calc(100vh - 60px);
+  background: var(--sensor-page-bg);
+  border-radius: 18px;
+  padding: 22px;
+  box-sizing: border-box;
+  animation: sensorFadeIn 0.45s ease-out;
+}
+
+.sensor-shell {
+  width: 100%;
+  margin: 0;
+  font-family: 'Space Grotesk', sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sensor-filter-card {
+  display: grid;
+  grid-template-columns: 150px 1fr 160px 120px;
+  gap: 12px;
+  background: var(--sensor-filter-bg);
+  border: 1px solid var(--sensor-filter-border);
+  box-shadow: 0 22px 36px rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  padding: 22px 14px;
+  margin-bottom: 20px;
+}
+
+.sensor-control {
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid var(--sensor-input-border);
+  background: var(--sensor-input-bg);
+  color: var(--sensor-input-text);
+  padding: 0 12px;
+  font-family: inherit;
+  font-weight: 500;
+  outline: none;
+}
+
+.sensor-control::placeholder {
+  color: var(--sensor-input-placeholder);
+}
+
+.sensor-control:focus {
+  border-color: rgba(83, 145, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(67, 118, 233, 0.2);
+}
+
+/* ── Search group (input row + error message) ── */
+.sensor-search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Row chứa input + unit select (khi ở value mode) */
+.sensor-search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sensor-search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.sensor-search-input-wrap .sensor-search {
+  width: 100%;
+  padding-right: 32px;
+}
+
+/* Unit select — nhỏ hơn, xuất hiện bên phải input khi findBy=value */
+.sensor-unit-select {
+  width: 110px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.sensor-clear-input-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--sensor-input-placeholder);
+  font-size: 18px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+
+.sensor-clear-input-btn:hover {
+  color: var(--sensor-input-text);
+}
+
+.sensor-validation-error {
+  font-size: 12px;
+  color: #ff4f4f;
+  margin: 0;
+  padding: 0 2px;
+}
+
+.sensor-control.input-error {
+  border-color: #ff4f4f !important;
+  box-shadow: 0 0 0 3px rgba(255, 79, 79, 0.18) !important;
+}
+
+.sensor-search-button {
+  height: 42px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(120deg, #2f66d8, #3b87ff);
+  color: #f2f7ff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.22s ease, filter 0.22s ease;
+  white-space: nowrap;
+}
+
+.sensor-search-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.sensor-search-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+  transform: none;
+}
+
+.sensor-table-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sensor-table-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.sensor-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.sensor-table thead tr {
+  background: var(--sensor-table-head-bg);
+}
+
+.sensor-table th,
+.sensor-table td {
+  text-align: left;
+  padding: 14px 16px;
+  font-size: 15px;
+}
+
+.sensor-table th {
+  color: var(--panel-heading);
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--sensor-table-head-bg);
+  backdrop-filter: blur(2px);
+}
+
+.sensor-table tbody tr {
+  border-top: 1px solid rgba(123, 143, 197, 0.16);
+  color: var(--sensor-table-row-text);
+}
+
+.sensor-table tbody tr:nth-child(even) {
+  background: var(--sensor-table-row-alt);
+}
+
+.sensor-empty {
+  text-align: center;
+  color: var(--sensor-muted);
+  padding: 24px;
+}
+
+.sensor-state-text {
+  padding: 24px;
+  color: var(--sensor-muted);
+  margin: 0;
+}
+
+.sensor-pagination-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(123, 143, 197, 0.16);
+  background: var(--sensor-pagination-bg);
+}
+
+.sensor-pagination-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sensor-record-range {
+  font-size: 13px;
+  color: var(--sensor-muted);
+  white-space: nowrap;
+}
+
+.sensor-page-size {
+  background: var(--sensor-page-size-bg);
+  color: var(--sensor-page-size-text);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sensor-page-size input {
+  width: 64px;
+  border: 1px solid var(--sensor-page-size-input-border);
+  border-radius: 6px;
+  background: var(--sensor-page-size-input-bg);
+  color: var(--sensor-page-size-input-text);
+  padding: 4px 6px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.sensor-page-size input:focus {
+  border-color: rgba(102, 156, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(67, 118, 233, 0.2);
+}
+
+.sensor-pagination {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sensor-page-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--sensor-page-btn-border);
+  border-radius: 6px;
+  background: var(--sensor-page-btn-bg);
+  color: var(--sensor-page-btn-text);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sensor-page-btn.active {
+  background: #2f66d8;
+  border-color: #2f66d8;
+  color: #fff;
+}
+
+.sensor-page-btn.nav {
+  border: none;
+  background: transparent;
+  color: var(--sensor-page-btn-nav-text);
+}
+
+.sensor-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@keyframes sensorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 992px) {
+  .sensor-filter-card {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+
+  .sensor-pagination-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sensor-pagination-left {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 680px) {
+  .sensor-page {
+    height: calc(100vh - 40px);
+    padding: 10px;
+  }
+
+  .sensor-table th,
+  .sensor-table td {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  .sensor-pagination {
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,145 @@
+:root {
+  --bg-color: #0d1117;
+  --text-main: #e0e6f1;
+  --text-dim: #909bb4;
+  --accent-blue: #00e5ff;
+  --accent-orange: #ff3d00;
+  --accent-yellow: #ffc400;
+  --accent-green: #00c853;
+
+  --sidebar-bg: #1b2028;
+  --sidebar-border: #30363d;
+  --sidebar-link-active-bg: rgba(255, 255, 255, 0.05);
+  --sidebar-link-active-text: #ffffff;
+  --brand-bolt: #ffc400;
+
+  --theme-toggle-bg: rgba(31, 45, 81, 0.86);
+  --theme-toggle-border: rgba(125, 148, 223, 0.36);
+  --theme-toggle-text: #e6ecff;
+  --theme-toggle-shadow: rgba(3, 10, 26, 0.3);
+
+  --main-surface-bg: transparent;
+  --panel-bg: rgba(23, 34, 69, 0.88);
+  --panel-border: rgba(132, 153, 212, 0.22);
+  --panel-heading: #f4f7ff;
+
+  --sensor-page-bg:
+    radial-gradient(circle at 25% 15%, rgba(63, 116, 255, 0.22), transparent 42%),
+    radial-gradient(circle at 75% 65%, rgba(0, 207, 255, 0.16), transparent 45%),
+    linear-gradient(140deg, #0a111f, #071024 46%, #050b18 100%);
+  --sensor-filter-bg: rgba(24, 35, 71, 0.8);
+  --sensor-filter-border: rgba(131, 153, 213, 0.24);
+  --sensor-input-bg: rgba(44, 57, 104, 0.65);
+  --sensor-input-border: rgba(122, 143, 205, 0.28);
+  --sensor-input-text: #e9eeff;
+  --sensor-input-placeholder: #99abd9;
+  --sensor-table-head-bg: rgba(55, 70, 117, 0.98);
+  --sensor-table-row-text: #d7e2ff;
+  --sensor-table-row-alt: rgba(67, 82, 128, 0.52);
+  --sensor-muted: #b4c0e1;
+  --sensor-pagination-bg: rgba(17, 25, 51, 0.9);
+  --sensor-page-size-bg: rgba(56, 72, 117, 0.65);
+  --sensor-page-size-text: #a4b5e2;
+  --sensor-page-size-input-bg: rgba(28, 40, 74, 0.85);
+  --sensor-page-size-input-border: rgba(136, 154, 207, 0.45);
+  --sensor-page-size-input-text: #dce8ff;
+  --sensor-page-btn-bg: rgba(42, 56, 96, 0.65);
+  --sensor-page-btn-border: rgba(136, 154, 207, 0.35);
+  --sensor-page-btn-text: #d8e3ff;
+  --sensor-page-btn-nav-text: #dce7ff;
+
+  --profile-card-bg: rgba(36, 45, 80, 0.9);
+  --profile-card-border: rgba(115, 135, 196, 0.45);
+  --profile-card-shadow: rgba(2, 8, 20, 0.3);
+  --profile-avatar-bg: #2e4f89;
+  --profile-avatar-border: rgba(107, 138, 217, 0.85);
+  --profile-subtext: #cad5f1;
+  --profile-link-text: #e6ecff;
+  --profile-link-hover-border: rgba(153, 177, 255, 0.8);
+  --profile-page-bg: transparent;
+
+  --chart-grid: #333;
+  --chart-axis: #8b949e;
+  --chart-tooltip-bg: #161b22;
+  --dashboard-placeholder: #888;
+}
+
+body.theme-light {
+  --bg-color: #f2f7ff;
+  --text-main: #1c2f57;
+  --text-dim: #5673a8;
+
+  --sidebar-bg: linear-gradient(180deg, #f9fcff 0%, #edf5ff 100%);
+  --sidebar-border: rgba(126, 162, 225, 0.38);
+  --sidebar-link-active-bg: rgba(79, 136, 255, 0.16);
+  --sidebar-link-active-text: #17366f;
+  --brand-bolt: #f1ab00;
+
+  --theme-toggle-bg: #ffffff;
+  --theme-toggle-border: rgba(82, 126, 209, 0.34);
+  --theme-toggle-text: #2a4f96;
+  --theme-toggle-shadow: rgba(48, 92, 170, 0.2);
+
+  --main-surface-bg: linear-gradient(145deg, #f5f9ff 0%, #f0f6ff 48%, #fffaf0 100%);
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --panel-border: rgba(141, 178, 246, 0.42);
+  --panel-heading: #264b8d;
+
+  --sensor-page-bg:
+    radial-gradient(circle at 16% 8%, rgba(132, 198, 255, 0.34), transparent 35%),
+    radial-gradient(circle at 84% 85%, rgba(255, 196, 125, 0.3), transparent 40%),
+    linear-gradient(138deg, #f8fbff 0%, #edf5ff 50%, #fff8ea 100%);
+  --sensor-filter-bg: rgba(255, 255, 255, 0.9);
+  --sensor-filter-border: rgba(135, 172, 240, 0.4);
+  --sensor-input-bg: rgba(246, 250, 255, 0.98);
+  --sensor-input-border: rgba(133, 169, 236, 0.48);
+  --sensor-input-text: #284a8d;
+  --sensor-input-placeholder: #6f8ec2;
+  --sensor-table-head-bg: rgba(226, 238, 255, 0.98);
+  --sensor-table-row-text: #2f4f88;
+  --sensor-table-row-alt: rgba(239, 246, 255, 0.9);
+  --sensor-muted: #5b79ac;
+  --sensor-pagination-bg: rgba(238, 246, 255, 0.95);
+  --sensor-page-size-bg: rgba(225, 237, 255, 0.95);
+  --sensor-page-size-text: #3f5f98;
+  --sensor-page-size-input-bg: #ffffff;
+  --sensor-page-size-input-border: rgba(127, 161, 228, 0.5);
+  --sensor-page-size-input-text: #2f4f88;
+  --sensor-page-btn-bg: #edf4ff;
+  --sensor-page-btn-border: rgba(129, 164, 231, 0.52);
+  --sensor-page-btn-text: #3d5d95;
+  --sensor-page-btn-nav-text: #4569a8;
+
+  --profile-card-bg: rgba(255, 255, 255, 0.92);
+  --profile-card-border: rgba(150, 185, 255, 0.7);
+  --profile-card-shadow: rgba(56, 91, 163, 0.18);
+  --profile-avatar-bg: #dce9ff;
+  --profile-avatar-border: rgba(87, 134, 235, 0.78);
+  --profile-subtext: #3559a7;
+  --profile-link-text: #213b78;
+  --profile-link-hover-border: rgba(100, 150, 245, 0.82);
+  --profile-page-bg:
+    radial-gradient(circle at 12% 10%, rgba(129, 196, 255, 0.45), transparent 34%),
+    radial-gradient(circle at 88% 88%, rgba(255, 195, 122, 0.38), transparent 38%),
+    linear-gradient(138deg, #f8fbff 0%, #eaf3ff 45%, #fdf6e9 100%);
+
+  --chart-grid: #c7d6ef;
+  --chart-axis: #5f7fb7;
+  --chart-tooltip-bg: #ffffff;
+  --dashboard-placeholder: #6283ba;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
