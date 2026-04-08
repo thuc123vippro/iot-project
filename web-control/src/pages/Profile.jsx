@@ -14,7 +14,7 @@ const links = [
   {
     id: 'docs',
     title: 'API Docs',
-    href: 'https://example.com/api-docs',
+    href: 'https://venerable-sopapillas-b4930d.netlify.app/',
     icon: FaBook,
     iconClassName: 'icon-docs'
   },
