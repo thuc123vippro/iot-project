@@ -1,7 +1,6 @@
 services:
   db:
     image: sinhviennamhai/iot-db:latest
-    container_name: smart-home-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: 123456
@@ -18,7 +17,6 @@ services:
 
   mqtt-broker:
     image: eclipse-mosquitto:2
-    container_name: smart-home-mqtt
     restart: unless-stopped
     ports:
       - "1883:1883"
@@ -26,7 +24,6 @@ services:
 
   backend:
     image: sinhviennamhai/iot-backend:latest
-    container_name: smart-home-node
     restart: unless-stopped
     ports:
       - "3001:3001"
@@ -46,7 +43,6 @@ services:
 
   frontend:
     image: sinhviennamhai/iot-frontend:latest
-    container_name: smart-home-react
     restart: unless-stopped
     ports:
       - "3000:80"
