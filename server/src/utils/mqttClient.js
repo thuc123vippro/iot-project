@@ -23,6 +23,8 @@ const connectMQTT = () => {
         console.log(`✅ Đã kết nối thành công tới MQTT Broker (Port ${options.port})`);
         // Lắng nghe phản hồi chung từ tất cả thiết bị
         client.subscribe('iot/deviceresponse');
+        // Thiết bị gửi tín hiệu khi reconnect để backend đồng bộ lại trạng thái từ DB
+        client.subscribe('iot/device/reconnect');
         // Subscribe topic sensor để nhận dữ liệu nhiệt độ/độ ẩm từ ESP32
         client.subscribe('iot/sensor/all');
     });
