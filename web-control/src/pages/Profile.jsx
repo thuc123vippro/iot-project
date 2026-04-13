@@ -7,28 +7,28 @@ const links = [
   {
     id: 'report',
     title: 'Report PDF',
-    href: 'https://example.com/report.pdf',
+    href: 'https://docs.google.com/document/d/1bmwKxajpFCU9om8gz0EmbwypiBpfFK0ETubv2ahXNfo/edit?usp=sharing',
     icon: FaFilePdf,
     iconClassName: 'icon-report'
   },
   {
     id: 'docs',
     title: 'API Docs',
-    href: 'https://venerable-sopapillas-b4930d.netlify.app/',
+    href: 'http://localhost:3001/api-docs/',
     icon: FaBook,
     iconClassName: 'icon-docs'
   },
   {
     id: 'github',
     title: 'Github',
-    href: 'https://github.com/your-username/your-repo',
+    href: 'https://github.com/thuc123vippro/iot-project.git',
     icon: FaGithub,
     iconClassName: 'icon-github'
   },
   {
     id: 'figma',
     title: 'Figma',
-    href: 'https://www.figma.com/file/your-file-id',
+    href: 'https://www.figma.com/design/ThPQGq7wjE57ZwYm2ZK75N/Untitled?node-id=0-1&t=UEsTVE8f9PB8CEuB-1',
     icon: SiFigma,
     iconClassName: 'icon-figma'
   }

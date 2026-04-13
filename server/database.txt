@@ -7,6 +7,13 @@ CREATE TABLE sensors (
     unit VARCHAR(50),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE sensors 
+ADD COLUMN type VARCHAR(100) AFTER name;
+
+INSERT INTO sensors (name, type, unit) VALUES 
+('Temperature', 'temp', '°C'),
+('Humidity', 'humid', '%'),
+('Light', 'light', 'Lx');
 
 -- Tạo bảng sensor_data (Dữ liệu cảm biến gửi về)
 CREATE TABLE sensor_data (
@@ -43,9 +50,29 @@ CREATE TABLE action_history (
 
 
 
-INSERT INTO devices (name, gpio_pin, mqtt_topic, current_status) VALUES 
-('Light', 5, 'iot/device/light/set', 'off'),
-('Fan', 18, 'iot/device/fan/set', 'off'),
-('Air Conditioner', 19, 'iot/device/air_conditioner/set', 'off');
+INSERT INTO devices (name, gpio_pin,type, mqtt_topic, current_status) VALUES 
+('Light2', 5,'light', 'iot/device/light/set', 'off');
 
+
+
+USE smart_home_db;
+
+-- 1. Thêm cột type
+ALTER TABLE devices
+ADD COLUMN type ENUM('light', 'fan', 'ac') NOT NULL DEFAULT 'light' AFTER name;
+SET SQL_SAFE_UPDATES = 0;
+-- 2. Cập nhật dữ liệu cũ cho đúng (Ví dụ)
+UPDATE devices SET type = 'light' WHERE name LIKE '%Light%';
+UPDATE devices SET type = 'fan' WHERE name LIKE '%Fan%';
+UPDATE devices SET type = 'ac' WHERE name LIKE '%Condition%';
+SET SQL_SAFE_UPDATES = 1;
+-- Kiểm tra lại
+
+
+
+
+SELECT * FROM devices;
+DELETE FROM devices WHERE device_id = 4;
+
+	SELECT * FROM sensor_data;
 SELECT * FROM devices;
