@@ -41,7 +41,7 @@ exports.toggleDeviceLogic = async (deviceId) => {
     const mqttClient = getMqttClient();
     if (mqttClient) {
         const payload = JSON.stringify({ device_id: deviceId, pin: device.gpio_pin, command: targetAction });
-        mqttClient.publish('iot/devicecontrol', payload);
+        mqttClient.publish('iot/devicecontroll', payload);
     }
 
     // E. Setup Timeout (5s)
@@ -73,6 +73,42 @@ exports.toggleDeviceLogic = async (deviceId) => {
 
 // Hàm xử lý tin nhắn MQTT nhận về
 exports.handleMqttMessage = async (topic, message) => {
+    if (topic === 'iot/device/reconnect') {
+        let reconnectPayload = {};
+        try {
+            reconnectPayload = JSON.parse(message.toString());
+        } catch (e) {
+            // Cho phép payload rỗng để giữ backward compatibility
+        }
+
+        const mqttClient = getMqttClient();
+        if (!mqttClient) return;
+
+        // Khi thiết bị reboot, các request cũ coi như không còn hiệu lực.
+        Object.keys(pendingRequests).forEach((deviceId) => {
+            clearTimeout(pendingRequests[deviceId].timeoutObj);
+            delete pendingRequests[deviceId];
+        });
+
+        const devices = await DeviceModel.getAll();
+
+        devices.forEach((device) => {
+            const desiredStatus = device.current_status === 'on' ? 'on' : 'off';
+
+            const payload = JSON.stringify({
+                device_id: device.device_id,
+                pin: device.gpio_pin,
+                command: desiredStatus,
+                source: 'db_sync'
+            });
+
+            mqttClient.publish('iot/devicecontroll', payload);
+        });
+
+        console.log(`[SYNC] Reconnect signal received (${reconnectPayload.node_id || 'unknown'}). Synced ${devices.length} devices from DB.`);
+        return;
+    }
+
     if (topic !== 'iot/deviceresponse') return;
 
     let parsed;

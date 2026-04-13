@@ -21,6 +21,16 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 long lastMsg = 0;
 
+void publishReconnectSignal() {
+  StaticJsonDocument<96> doc;
+  doc["event"] = "reconnect";
+  doc["node_id"] = "esp32_main";
+
+  char payload[96];
+  serializeJson(doc, payload);
+  client.publish("iot/device/reconnect", payload);
+}
+
 void callback(char* topic, byte* payload, unsigned int length) {
   if (String(topic) != "iot/devicecontroll") return;
 
@@ -38,6 +48,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   StaticJsonDocument<64> resp;
   resp["device_id"] = device_id;
   resp["result"]    = command + " success";
+  resp["source"]    = "device_apply";
 
   char buf[64];
   serializeJson(resp, buf);
@@ -54,6 +65,7 @@ void reconnect() {
     if (client.connect(clientId.c_str(), mqtt_user, mqtt_pass)) {
       Serial.println("Thanh cong!");
       client.subscribe("iot/devicecontroll");
+      publishReconnectSignal();
     } else {
       Serial.printf("Loi rc=%d, thu lai sau 5s\n", client.state());
       delay(5000);
